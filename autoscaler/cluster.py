@@ -203,8 +203,9 @@ class Cluster(object):
             running_insts_map = self.get_running_instances_map(managed_nodes, azure_groups)
             self.stats.gauge('autoscaler.scaling_loop.instance_lookup_time', time.time() - instance_lookup_start_time)
 
-
+            pods_to_schedule_lookup_start_time = time.time()
             pods_to_schedule = self.get_pods_to_schedule(pods)
+            self.stats.gauge('autoscaler.scaling_loop.pods_to_schedule_lookup_time', time.time() - pods_to_schedule_lookup_time)
 
             res_data = self.reservation_client.list_reservations()
             reservations_map = dict((r['id'], reservations.Reservation(r, managed_nodes))
